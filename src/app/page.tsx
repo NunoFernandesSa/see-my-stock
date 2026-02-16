@@ -1,14 +1,15 @@
 import Image from "next/image";
 import { Button } from "../components/ui/button";
+import Navbar from "../components/shared/Navbar";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main>
-        <Button variant="outline" size="lg">
-          Hello World
-        </Button>
-      </main>
-    </div>
+    <>
+      <header className="w-full h-16 flex items-center justify-center">
+        <Navbar />
+      </header>
+      <main></main>
+      <footer></footer>
+    </>
   );
 }
