@@ -9,7 +9,7 @@ import {
 export const NAV_LINKS = [
   {
     name: "Dashboard",
-    href: "/",
+    href: "/dashboard",
     icon: LayoutDashboard,
   },
   {
