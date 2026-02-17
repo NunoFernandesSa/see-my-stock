@@ -1,6 +1,7 @@
 "use client";
 
 import PublicNavbar from "@/src/components/shared/PublicNavbar";
+import LogoLoader from "@/src/components/ui/LogoLoader";
 import { useAuth } from "@clerk/nextjs";
 
 export default function PublicLayout({
@@ -10,9 +11,7 @@ export default function PublicLayout({
 }>) {
   const { isLoaded, userId } = useAuth();
 
-  if (!isLoaded) {
-    return <div>Loading...</div>;
-  }
+  if (!isLoaded) return <LogoLoader />;
 
   return (
     <>

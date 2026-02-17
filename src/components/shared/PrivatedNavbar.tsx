@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils";
 
 // Icons
 import { Menu, X } from "lucide-react";
+import Logo from "./Logo";
 
 /**
  * Navbar component.
@@ -61,10 +62,7 @@ export default function PrivatedNavbar(): JSX.Element {
   return (
     <header className="container mx-auto px-4 py-2 border-b-2">
       <div className="flex items-center justify-between">
-        {/* logo */}
-        <Link href="/" className="text-xl font-bold text-gray-600">
-          SeeMyStock
-        </Link>
+        <Logo href="/dashboard" />
 
         {/* desktop navbar */}
         <NavigationMenu className="hidden md:flex">

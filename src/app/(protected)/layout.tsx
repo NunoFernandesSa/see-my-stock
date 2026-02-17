@@ -1,6 +1,7 @@
 "use client";
 
 import PrivatedNavbar from "@/src/components/shared/PrivatedNavbar";
+import CardLoader from "@/src/components/ui/CardLoader";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -20,9 +21,7 @@ export default function ConnectedLayout({
     }
   }, [isLoaded, userId, router]);
 
-  if (!isLoaded) {
-    return <div>Loading...</div>;
-  }
+  if (!isLoaded) return <CardLoader />;
 
   return (
     <>

@@ -2,6 +2,7 @@
 
 import { SignInButton, SignUpButton, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
+import Logo from "./Logo";
 
 export default function PublicNavbar() {
   const { isSignedIn } = useAuth();
@@ -9,10 +10,7 @@ export default function PublicNavbar() {
   return (
     <header className="container mx-auto px-4 py-2 border-b-2">
       <div className="flex items-center justify-between">
-        {/* logo */}
-        <Link href="/" className="text-xl font-bold text-gray-600">
-          SeeMyStock
-        </Link>
+        <Logo />
 
         <nav className="flex items-center justify-between">
           <div className="flex items-center gap-4">
