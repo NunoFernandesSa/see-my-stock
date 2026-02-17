@@ -31,7 +31,7 @@ import { Menu, X } from "lucide-react";
  *
  * @returns {JSX.Element} A JSX element representing the navigation bar.
  */
-export default function Navbar(): JSX.Element {
+export default function PrivatedNavbar(): JSX.Element {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [shouldRenderMenu, setShouldRenderMenu] = useState(false);
@@ -59,10 +59,12 @@ export default function Navbar(): JSX.Element {
   };
 
   return (
-    <div className="container mx-auto px-4 py-2">
+    <header className="container mx-auto px-4 py-2 border-b-2">
       <div className="flex items-center justify-between">
         {/* logo */}
-        <span className="text-xl font-bold text-gray-600">SeeMyStock</span>
+        <Link href="/" className="text-xl font-bold text-gray-600">
+          SeeMyStock
+        </Link>
 
         {/* desktop navbar */}
         <NavigationMenu className="hidden md:flex">
@@ -200,6 +202,6 @@ export default function Navbar(): JSX.Element {
           </div>
         </>
       )}
-    </div>
+    </header>
   );
 }
