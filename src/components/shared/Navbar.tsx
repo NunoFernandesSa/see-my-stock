@@ -1,7 +1,7 @@
 "use client";
 
 // React/Next
-import { JSX, useState } from "react";
+import { JSX, useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -34,6 +34,21 @@ import { Menu, X } from "lucide-react";
 export default function Navbar(): JSX.Element {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [shouldRenderMenu, setShouldRenderMenu] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      setShouldRenderMenu(true);
+      // Petit délai pour permettre l'animation d'entrée
+      setTimeout(() => setIsAnimating(true), 10);
+    } else {
+      setIsAnimating(false);
+      // Délai pour permettre l'animation de sortie
+      const timer = setTimeout(() => setShouldRenderMenu(false), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isMobileMenuOpen]);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -108,57 +123,82 @@ export default function Navbar(): JSX.Element {
         </Button>
       </div>
 
-      {/* mobile navbar - dropdown menu */}
-      {isMobileMenuOpen && (
-        <div className="absolute left-0 right-0 top-14 z-50 mx-auto w-full bg-white shadow-lg md:hidden">
-          <nav className="container mx-auto flex flex-col px-4 py-4">
-            {NAV_LINKS.map((link) => {
-              const Icon = link.icon;
-              const isActive = pathname === link.href;
-              const isActiveRoute =
-                pathname.startsWith(link.href) && link.href !== "/";
+      {/* mobile navbar - slide menu from left */}
+      {shouldRenderMenu && (
+        <>
+          {/* overlay */}
+          <div
+            className={cn(
+              "fixed inset-0 z-40 bg-black/20 transition-opacity duration-300 md:hidden",
+              isAnimating ? "opacity-100" : "opacity-0",
+            )}
+            onClick={closeMobileMenu}
+            aria-hidden="true"
+          />
 
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={closeMobileMenu}
-                  className={cn(
-                    "flex items-center gap-3 rounded-lg px-4 py-3 text-base font-medium transition-all",
-                    "hover:bg-gray-50 active:bg-gray-100",
-                    isActive || isActiveRoute
-                      ? "bg-blue-50 text-blue-600"
-                      : "text-gray-700",
-                  )}
-                >
-                  <Icon
+          {/* menu panel */}
+          <div
+            className={cn(
+              "fixed left-0 top-0 z-50 h-full w-64 transform bg-white shadow-xl transition-transform duration-300 ease-in-out md:hidden",
+              isAnimating ? "translate-x-0" : "-translate-x-full",
+            )}
+          >
+            {/* menu header */}
+            <div className="flex items-center justify-between border-b px-4 py-3">
+              <span className="text-lg font-bold text-gray-600">
+                SeeMyStock
+              </span>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={closeMobileMenu}
+                className="h-8 w-8"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+
+            {/* navigation links */}
+            <nav className="flex flex-col p-4">
+              {NAV_LINKS.map((link) => {
+                const Icon = link.icon;
+                const isActive = pathname === link.href;
+                const isActiveRoute =
+                  pathname.startsWith(link.href) && link.href !== "/";
+
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={closeMobileMenu}
                     className={cn(
-                      "h-5 w-5",
+                      "flex items-center gap-3 rounded-lg px-4 py-3 text-base font-medium transition-all",
+                      "hover:bg-gray-50 active:bg-gray-100",
                       isActive || isActiveRoute
-                        ? "text-blue-600"
-                        : "text-gray-500",
+                        ? "bg-blue-50 text-blue-600"
+                        : "text-gray-700",
                     )}
-                  />
-                  <span className="flex-1">{link.name}</span>
+                  >
+                    <Icon
+                      className={cn(
+                        "h-5 w-5",
+                        isActive || isActiveRoute
+                          ? "text-blue-600"
+                          : "text-gray-500",
+                      )}
+                    />
+                    <span className="flex-1">{link.name}</span>
 
-                  {/* active page indicator for mobile */}
-                  {(isActive || isActiveRoute) && (
-                    <span className="h-2 w-2 rounded-full bg-blue-600" />
-                  )}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
-      )}
-
-      {/* overlay to close mobile menu on click outside */}
-      {isMobileMenuOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/20 md:hidden"
-          onClick={closeMobileMenu}
-          aria-hidden="true"
-        />
+                    {/* active page indicator for mobile */}
+                    {(isActive || isActiveRoute) && (
+                      <span className="h-2 w-2 rounded-full bg-blue-600" />
+                    )}
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+        </>
       )}
     </div>
   );

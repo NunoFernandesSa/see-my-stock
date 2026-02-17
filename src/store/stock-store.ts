@@ -4,11 +4,14 @@ import { persist } from "zustand/middleware";
 interface Product {
   id: string;
   name: string;
+  description?: string;
   currentStock: number;
   lowStockThreshold: number;
   categoryId: string;
   purchasePrice?: number;
   sellingPrice?: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface StockMovement {
@@ -18,6 +21,7 @@ interface StockMovement {
   quantity: number;
   note?: string;
   createdAt: string;
+  updatedAt: string;
 }
 
 interface StockState {
